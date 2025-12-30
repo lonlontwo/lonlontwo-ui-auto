@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>兔兔網 - 後台管理</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .admin-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        input[type="text"],
+        input[type="url"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .preview-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+        }
+
+        .preview-label {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .logo-preview {
+            max-width: 200px;
+            max-height: 120px;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .marquee-preview {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 10px;
+            border-radius: 6px;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .status-message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .status-message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .info-box strong {
+            color: #2196F3;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-container">
+        <h1>🐰 兔兔網後台管理</h1>
+        <p class="subtitle">管理 LOGO 和跑馬燈設定</p>
+
+        <div class="info-box">
+            <strong>📌 說明：</strong> 這是一個示範頁面，展示如何透過後台控制前台的 LOGO 和跑馬燈。<br>
+            實際使用時，這些設定會儲存到資料庫（如 Supabase、Firebase）並透過 API 提供給前台。
+        </div>
+
+        <!-- LOGO 設定 -->
+        <div class="section">
+            <h2>🖼️ LOGO 設定</h2>
+
+            <div class="form-group">
+                <label for="logoUrl">LOGO 圖片 URL</label>
+                <input type="url" id="logoUrl" placeholder="https://example.com/logo.jpg">
+            </div>
+
+            <div class="form-group">
+                <label for="logoAlt">LOGO 替代文字</label>
+                <input type="text" id="logoAlt" placeholder="網站名稱">
+            </div>
+
+            <div class="form-group checkbox-group">
+                <input type="checkbox" id="logoVisible" checked>
+                <label for="logoVisible" style="margin-bottom: 0;">顯示 LOGO</label>
+            </div>
+
+            <div class="preview-box">
+                <div class="preview-label">預覽：</div>
+                <img id="logoPreview" class="logo-preview" src="" alt="LOGO 預覽">
+            </div>
+
+            <button class="btn btn-primary" onclick="updateLogoSettings()">更新 LOGO</button>
+        </div>
+
+        <!-- 跑馬燈設定 -->
+        <div class="section">
+            <h2>📢 跑馬燈設定</h2>
+
+            <div class="form-group">
+                <label for="marqueeText">跑馬燈文字</label>
+                <textarea id="marqueeText" placeholder="輸入跑馬燈文字..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="marqueeSpeed">動畫速度（秒）</label>
+                <input type="number" id="marqueeSpeed" min="5" max="60" step="1" value="18">
+                <small style="color: #666;">數字越小速度越快，建議 10-30 秒</small>
+            </div>
+
+            <div class="form-group checkbox-group">
+                <input type="checkbox" id="marqueeVisible" checked>
+                <label for="marqueeVisible" style="margin-bottom: 0;">顯示跑馬燈</label>
+            </div>
+
+            <div class="preview-box">
+                <div class="preview-label">預覽：</div>
+                <div class="marquee-preview" id="marqueePreview"></div>
+            </div>
+
+            <button class="btn btn-primary" onclick="updateMarqueeSettings()">更新跑馬燈</button>
+        </div>
+
+        <!-- 操作按鈕 -->
+        <div class="section">
+            <h2>⚙️ 批次操作</h2>
+            <button class="btn btn-success" onclick="saveAllSettings()">💾 儲存所有設定</button>
+            <button class="btn btn-secondary" onclick="loadCurrentSettings()">🔄 載入目前設定</button>
+            <button class="btn btn-secondary" onclick="resetToDefault()">↩️ 恢復預設值</button>
+        </div>
+
+        <!-- 狀態訊息 -->
+        <div id="statusMessage" class="status-message"></div>
+    </div>
+
+    <script>
+        // 載入目前設定
+        function loadCurrentSettings() {
+            // 從 localStorage 讀取（實際應該從 API 讀取）
+            const config = JSON.parse(localStorage.getItem('uiConfig')) || {
+                logo: {
+                    imageUrl: "https://i.ibb.co/KxTkk34/Lonely-Rabbit-logo.jpg",
+                    altText: "兔兔網LOGO",
+                    visible: true
+                },
+                marquee: {
+                    text: "歡迎來到兔兔網 - 精選實用網站集合 | 點擊按鈕快速訪問您喜愛的網站 | 安全、便捷、高效",
+                    visible: true,
+                    animationDuration: 18
+                }
+            };
+
+            // 填入表單
+            document.getElementById('logoUrl').value = config.logo.imageUrl;
+            document.getElementById('logoAlt').value = config.logo.altText;
+            document.getElementById('logoVisible').checked = config.logo.visible;
+            document.getElementById('logoPreview').src = config.logo.imageUrl;
+
+            document.getElementById('marqueeText').value = config.marquee.text;
+            document.getElementById('marqueeSpeed').value = config.marquee.animationDuration;
+            document.getElementById('marqueeVisible').checked = config.marquee.visible;
+            document.getElementById('marqueePreview').textContent = config.marquee.text;
+
+            showStatus('設定已載入', 'success');
+        }
+
+        // 更新 LOGO
+        function updateLogoSettings() {
+            const logoUrl = document.getElementById('logoUrl').value;
+            const logoAlt = document.getElementById('logoAlt').value;
+            const logoVisible = document.getElementById('logoVisible').checked;
+
+            if (!logoUrl) {
+                showStatus('請輸入 LOGO URL', 'error');
+                return;
+            }
+
+            // 更新預覽
+            document.getElementById('logoPreview').src = logoUrl;
+
+            showStatus('LOGO 設定已更新（請點擊「儲存所有設定」以保存）', 'success');
+        }
+
+        // 更新跑馬燈
+        function updateMarqueeSettings() {
+            const marqueeText = document.getElementById('marqueeText').value;
+            const marqueeSpeed = document.getElementById('marqueeSpeed').value;
+            const marqueeVisible = document.getElementById('marqueeVisible').checked;
+
+            if (!marqueeText) {
+                showStatus('請輸入跑馬燈文字', 'error');
+                return;
+            }
+
+            // 更新預覽
+            document.getElementById('marqueePreview').textContent = marqueeText;
+
+            showStatus('跑馬燈設定已更新（請點擊「儲存所有設定」以保存）', 'success');
+        }
+
+        // 儲存所有設定
+        function saveAllSettings() {
+            const config = {
+                logo: {
+                    imageUrl: document.getElementById('logoUrl').value,
+                    altText: document.getElementById('logoAlt').value,
+                    visible: document.getElementById('logoVisible').checked
+                },
+                marquee: {
+                    text: document.getElementById('marqueeText').value,
+                    visible: document.getElementById('marqueeVisible').checked,
+                    animationDuration: parseInt(document.getElementById('marqueeSpeed').value)
+                }
+            };
+
+            // 儲存到 localStorage（實際應該儲存到資料庫）
+            localStorage.setItem('uiConfig', JSON.stringify(config));
+
+            // 實際使用時應該呼叫 API
+            // await fetch('/api/ui-config', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify(config)
+            // });
+
+            showStatus('✅ 所有設定已儲存！前台重新整理後會套用新設定。', 'success');
+        }
+
+        // 恢復預設值
+        function resetToDefault() {
+            if (confirm('確定要恢復預設值嗎？')) {
+                localStorage.removeItem('uiConfig');
+                loadCurrentSettings();
+                showStatus('已恢復預設值', 'success');
+            }
+        }
+
+        // 顯示狀態訊息
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.textContent = message;
+            statusDiv.className = `status-message ${type}`;
+            statusDiv.style.display = 'block';
+
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // 即時預覽 LOGO
+        document.getElementById('logoUrl').addEventListener('input', function () {
+            document.getElementById('logoPreview').src = this.value;
+        });
+
+        // 即時預覽跑馬燈
+        document.getElementById('marqueeText').addEventListener('input', function () {
+            document.getElementById('marqueePreview').textContent = this.value;
+        });
+
+        // 頁面載入時載入設定
+        window.addEventListener('load', loadCurrentSettings);
+    </script>
+</body>
+
+</html>
